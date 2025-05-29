@@ -36,10 +36,10 @@ impl InputHandler for CrosstermInputHandler {
     fn handle_input(&self, event: Event) -> Result<InputAction, Self::Error> {
         if let Event::Key(KeyEvent { code, .. }) = event {
             let action = match code {
-                KeyCode::Up => InputAction::Move(Direction::Up),
-                KeyCode::Down => InputAction::Move(Direction::Down),
-                KeyCode::Left => InputAction::Move(Direction::Left),
-                KeyCode::Right => InputAction::Move(Direction::Right),
+                KeyCode::Up | KeyCode::Char('w') => InputAction::Move(Direction::Up),
+                KeyCode::Down | KeyCode::Char('s') => InputAction::Move(Direction::Down),
+                KeyCode::Left | KeyCode::Char('a') => InputAction::Move(Direction::Left),
+                KeyCode::Right | KeyCode::Char('d') => InputAction::Move(Direction::Right),
                 KeyCode::Char(' ') => InputAction::Pause,
                 KeyCode::Char('r') | KeyCode::Char('R') => InputAction::Restart,
                 KeyCode::Char('q') | KeyCode::Char('Q') | KeyCode::Esc => InputAction::Quit,
