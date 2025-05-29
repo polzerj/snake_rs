@@ -1,7 +1,7 @@
 use rand::{Rng, rngs::ThreadRng};
 use std::collections::VecDeque;
 
-const INITIAL_SNAKE_LENGTH: usize = 2;
+const INITIAL_SNAKE_LENGTH: usize = 4;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Position {

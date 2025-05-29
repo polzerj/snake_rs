@@ -46,6 +46,7 @@ impl<I: InputHandler, S: SoundSystem> App<I, S> {
     pub fn run<B: Backend>(&mut self, terminal: &mut Terminal<B>) -> io::Result<()> {
         let tick_rate = Duration::from_millis(100);
         let mut last_tick = Instant::now();
+        let mut direction_store_next_tick = None;
 
         loop {
             terminal.draw(|f| {
@@ -60,7 +61,11 @@ impl<I: InputHandler, S: SoundSystem> App<I, S> {
                 if let Ok(action) = self.input_handler.handle_input(event::read()?) {
                     match action {
                         InputAction::Move(direction) => {
-                            self.game.set_direction(direction);
+                            // Only allow one direction change per tick
+                            if direction_store_next_tick.is_none() {
+                                self.game.set_direction(direction);
+                            }
+                            direction_store_next_tick = Some(direction);
                         }
                         InputAction::Pause => {
                             self.game.toggle_pause();
@@ -86,6 +91,11 @@ impl<I: InputHandler, S: SoundSystem> App<I, S> {
                 }
 
                 last_tick = Instant::now();
+                self.game.set_direction(
+                    direction_store_next_tick
+                        .take()
+                        .unwrap_or(self.game.snake().direction()),
+                );
             }
 
             if self.should_quit {
