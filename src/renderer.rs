@@ -31,7 +31,15 @@ impl TuiRenderer {
     }
 
     fn render_game_area(&self, f: &mut Frame, game: &Game, config: &GameConfig, area: Rect) {
-        let outer_block = Block::default().title("Snake Game").borders(Borders::ALL);
+        let border_style = if config.enable_colors {
+            Style::default().fg(config.border_color)
+        } else {
+            Style::default()
+        };
+        let outer_block = Block::default()
+            .title("Snake Game")
+            .borders(Borders::ALL)
+            .style(border_style);
 
         let outer_inner = outer_block.inner(area);
         f.render_widget(outer_block, area);
@@ -78,15 +86,15 @@ impl TuiRenderer {
         );
 
         // Draw the game board border
-        let border_style = if config.enable_colors {
-            Style::default().fg(config.border_color)
+        let wall_style = if config.enable_colors {
+            Style::default().fg(config.wall_color)
         } else {
             Style::default()
         };
 
         let game_block = Block::default()
             .borders(Borders::ALL)
-            .border_style(border_style);
+            .border_style(wall_style);
 
         let inner = game_block.inner(game_board_area);
         f.render_widget(game_block, game_board_area);

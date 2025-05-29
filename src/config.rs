@@ -9,9 +9,7 @@ pub struct GameConfig {
     pub wall_wrapping: bool,
     pub snake_color: Color,
     pub food_color: Color,
-    #[allow(dead_code)]
     pub wall_color: Color,
-    #[allow(dead_code)]
     pub background_color: Color,
     pub border_color: Color,
     pub high_score: u32,
@@ -69,9 +67,18 @@ impl GameConfig {
         self
     }
 
-    #[allow(dead_code)]
     pub fn with_wall_color(mut self, color: Color) -> Self {
         self.wall_color = color;
+        self
+    }
+
+    pub fn with_background_color(mut self, color: Color) -> Self {
+        self.background_color = color;
+        self
+    }
+
+    pub fn with_border_color(mut self, color: Color) -> Self {
+        self.border_color = color;
         self
     }
 
